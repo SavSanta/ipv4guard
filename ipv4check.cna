@@ -8,9 +8,11 @@ beacon_command_register(
 
 global('$baseipnum $netmasknum 
 $quadsymb
+$nmquadsymb
 $cidrnum
 $ipsymb
 $cidrsymb
+$nmsymb
 ')
 
 alias ipv4check {
@@ -35,9 +37,10 @@ alias ipv4check {
         return;
     }
 
-   validate($1);
    setbaseipnum($1);
+   setnetmasknum($1);
    getipnum();
+   validate($1);
 
 }
 
@@ -46,7 +49,7 @@ sub setbaseipnum {
 
     local('$n $i $val');
     $i = 24;
-    $val = 0
+    $val = 0;
     $baseipnum = 0;
 
     for ($n = 0; $n < 4; $n++) {
@@ -60,13 +63,56 @@ sub setbaseipnum {
     $baseipnum += $val << $i;
     $i = $i - 8;
     }
-    
-    validate($1);
+
     
  }
 
+sub setnetmasknum {
+    local('$n $i $val');
+    $netmasknum = 0 ;
+    
+    # FOR CIDR Dereferencing - Add Switch statement for already symb nms
+    if (casti($cidrsymb, 'i') > 0) #&& ($cidrsymb < 33))
+    {
+            blog2($1, "INSIDE THE COMPARE!");
+        foreach $k => $v (%netmask2cidr)
+        {
+           if ($v == $cidrsymb)
+           {
+              $nmsymb = $k;
+           }
+        }
+    }
 
-sub getipnum { blog2($1, "Enter the GET IP NUM zone"); }
+    $i = 24;
+    $val = 0;
+    $netmasknum = 0;
+
+    $nmquadsymb = split('\.', $nmsymb);
+    if ($nmquadsymb[0] > 255) {
+            berror($1, "Invalid initial netmask: $nmsymb");
+            return;
+        }
+
+    for ($n = 0; $n < 4; $n++) {
+    
+        $val = casti($nmquadsymb[$n], 'i');
+
+        if ($val != ($val & 0xff)) {
+           berror($1, "Invalid netmask: $nmsymb");
+           return;
+        }
+        
+    $netmasknum += $val << $i;
+    $i = $i - 8;
+    }
+    
+
+
+}
+
+
+sub getipnum { }
 
 sub getipsymb { }
 
@@ -86,6 +132,12 @@ sub validate {
    blog2($1, "CIDR $cidrsymb");
    blog2($1, "Quads ip: $quadsymb");
    blog2($1, "Base GAWD IP is: $baseipnum");
+   blog2($1, "------------vv----------------");
+   blog2($1, "Symbolico Netmask ip: $nmsymb");
+   blog2($1, "Netmask Numericals is: $netmasknum");
+   blog2($1, "Netmask Symbol $nmsymb");
+   blog2($1, "Netmask Quads: $nmquadsymb");
+   
 
 }
 
