@@ -6,27 +6,64 @@ beacon_command_register(
 	"Usage: ipv4check <ADDR>/<NETMASK>\nipv4check <ADDR>-<ADDR>\n MY SILLY DESCRIPTION HERE.");
 
 
-$baseipnum
-$netmasknum
-
+global('$baseipnum $netmasknum 
+$quadsymb
 $cidrnum
 $ipsymb
 $cidrsymb
-
+')
 
 sub main {
+    
+    # Validate format If Includes Netmask
+    
+    $splitted = split("/", $1);
+    
+    if (size($splitted) != 2):
+        berror("Not a valid CIDR Address");
+        return;
 
-    # Validate Format If Includes Netmask
-     $splitted = split('.', $1);
+     
+    $ipsymb = $splitted[0];
+    $cidrsymb = $splitted[1];
+    $quadsymb = split('.', splitted[0]);
+    
+    if (size($ipsymb) != 4):
+        berror("Not a valid IPv4 Address");
+        return;
 
     # Validate Format If It Is Range
-   
-    # Exit If Bad
+   blog2("validation passed");
+   blog2("Symb ip: ", $ipsymb);
+   blog2("CIDR ", $cidrsymb);
+   blog2("Quads ip: ", $quadsymb);
+   #setbaseipnum();
+
+}
+
+
+sub setbaseipnum {
+    
+    local('$n $i $val')
+    $i = 24;
+    $baseipnum = 0;
+
+    for ($n = 0; n < 4; n++) {
+
+        $val = casti($quadsymb[n], 'i');
+
+        if ($val != ($val & 0xff)) {
+
+           berror("Invalid IP address: "+ ipsymb);
+        }
+
+    $baseipnum += $val << i;
+    $i = $i - 8;
 
  }
 
 
-sub getbaseip { }
+ }
 
 sub getipnum { }
 
