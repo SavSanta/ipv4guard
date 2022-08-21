@@ -35,11 +35,11 @@ alias ipv4check {
         return;
     }
 
-    # Validate Format If It Is Range
+   # Validate Format If It Is Range
    blog2($1, "validation passed");
-   blog2($1, "Symb ip: ", $ipsymb);
-   blog2($1, "CIDR ", $cidrsymb);
-   blog2($1, "Quads ip: ", $quadsymb);
+   blog2($1, "Symb ip:  $ipsymb");
+   blog2($1, "CIDR $cidrsymb");
+   blog2($1, "Quads ip: $quadsymb");
    #setbaseipnum();
 
 }
