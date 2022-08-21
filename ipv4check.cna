@@ -35,37 +35,38 @@ alias ipv4check {
         return;
     }
 
-   # Validate Format If It Is Range
-   blog2($1, "validation passed");
-   blog2($1, "Symb ip:  $ipsymb");
-   blog2($1, "CIDR $cidrsymb");
-   blog2($1, "Quads ip: $quadsymb");
-   #setbaseipnum();
+   validate($1);
+   setbaseipnum($1);
+   getipnum();
 
 }
 
 
 sub setbaseipnum {
-    
-    local('$n $i $val')
+
+    local('$n $i $val');
     $i = 24;
+    $val = 0
     $baseipnum = 0;
 
     for ($n = 0; $n < 4; $n++) {
-
+    
         $val = casti($quadsymb[$n], 'i');
 
         if ($val != ($val & 0xff)) {
 
-           berror($1, "Invalid IP address: " + $ipsymb);
+           berror($1, "Invalid IP address: $ipsymb");
         }
     $baseipnum += $val << $i;
     $i = $i - 8;
     }
+    
+    validate($1);
+    
  }
 
 
-sub getipnum { }
+sub getipnum { blog2($1, "Enter the GET IP NUM zone"); }
 
 sub getipsymb { }
 
@@ -77,7 +78,16 @@ sub getnumhosts {  }
 
 sub ipnum2ipsymb { }
 
+sub validate { 
 
+   # >>>>>>>>>> Validate On G
+   blog2($1, "validation passed");
+   blog2($1, "Symb ip: $ipsymb");
+   blog2($1, "CIDR $cidrsymb");
+   blog2($1, "Quads ip: $quadsymb");
+   blog2($1, "Base GAWD IP is: $baseipnum");
+
+}
 
 %cidr2hosts = %(
 
