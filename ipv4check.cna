@@ -48,22 +48,20 @@ alias ipv4check {
     $ipsymb = $splitted[0];
     $quadsymb = split('\.', $splitted[0]);
 
-
    setbaseipnum($1);
    setnetmasknum($1);
+   arrayallips($1);
    getipnum();
-   validate();
+   validate($1);
 
 }
 
 sub vdatecidr {
     local('$splitted');
-
-    $splitted = split("/", $2);
     
     if ("$2" !in %cidr2hosts)
     {
-        berror($1, "Not a valid CIDR Address: $2");
+        berror($1, "Invalid CIDR Mask: $2");
         throw("CIDR Error.");
     }
 
@@ -107,10 +105,8 @@ sub setnetmasknum {
     local('$n $i $val');
     $netmasknum = 0 ;
     
-    # FOR CIDR Dereferencing - Add Switch statement for already symb nms
-    if (casti($cidrsymb, 'i') > 0) #&& ($cidrsymb < 33))
+    if (casti($cidrsymb, 'i') > 0)
     {
-            blog2($1, "WE BE INSIDE THE COMPARE!");
         foreach $k => $v (%netmask2cidr)
         {
            if ($v == $cidrsymb)
@@ -149,8 +145,6 @@ sub setnetmasknum {
 sub getipnum { }
 
 sub getipsymb { }
-
-sub getbinary { }
 
 sub arrayallips {
 
@@ -210,7 +204,7 @@ sub ipnum2ipsymb {
         return $res;
 }
 
-sub validate { 
+sub testcase { 
 
    # >>>>>>>>>> Validate On G
    blog2($1, "validation passed");
@@ -233,38 +227,38 @@ sub validate {
 
 %cidr2hosts = %(
 
-"1"		=> "2147483392" ,
-"2"		=> "1073741696" ,
-"3"		=> "536870848"  ,
-"4"		=> "268435424"  ,
-"5"		=> "134217712"  ,
-"6"		=> "67108856"   ,
-"7"		=> "33554428"   ,
-"8"		=> "16777214"   ,
-"9"		=> "8388352"    ,
-"10"	=> "4194176"    ,
-"11"	=> "2097088"    ,
-"12"	=> "1048544"    ,
-"13"	=> "524272"     ,
-"14"	=> "262136"     ,
-"15"	=> "131068"     ,
-"16"	=> "65024"      ,
-"17"	=> "32512"      ,
-"18"	=> "16256"      ,
-"19"	=> "8128"       ,
-"20"	=> "4064"       ,
-"21"	=> "2032"       ,
-"22"	=> "1016"       ,
-"23"	=> "508"        ,
-"24"	=> "254"        ,
-"25"	=> "124"        ,
-"26"	=> "62"         ,
-"27"	=> "30"         ,
-"28"	=> "14"         ,
-"29"	=> "6"          ,
-"30"	=> "2"          ,
-"31"	=> $null        ,
-"32"	=> "1"          
+1	=> "2147483392" ,
+2	=> "1073741696" ,
+3	=> "536870848"  ,
+4	=> "268435424"  ,
+5	=> "134217712"  ,
+6	=> "67108856"   ,
+7	=> "33554428"   ,
+8	=> "16777214"   ,
+9	=> "8388352"    ,
+10	=> "4194176"    ,
+11	=> "2097088"    ,
+12	=> "1048544"    ,
+13	=> "524272"     ,
+14	=> "262136"     ,
+15	=> "131068"     ,
+16	=> "65024"      ,
+17	=> "32512"      ,
+18	=> "16256"      ,
+19	=> "8128"       ,
+20	=> "4064"       ,
+21	=> "2032"       ,
+22	=> "1016"       ,
+23	=> "508"        ,
+24	=> "254"        ,
+25	=> "124"        ,
+26	=> "62"         ,
+27	=> "30"         ,
+28	=> "14"         ,
+29	=> "6"          ,
+30	=> "2"          ,
+31	=> $null        ,
+32	=> "1"     
 
 );
 
