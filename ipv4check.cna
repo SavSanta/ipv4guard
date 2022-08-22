@@ -13,6 +13,7 @@ $cidrnum
 $ipsymb
 $cidrsymb
 $nmsymb
+$hosts
 ')
 
 alias ipv4check {
@@ -50,9 +51,11 @@ alias ipv4check {
 
    setbaseipnum($1);
    setnetmasknum($1);
-   arrayallips($1);
-   getipnum();
-   validate($1);
+   setarrayallips();
+   getnumhosts($1);
+   
+   
+   #testcase($1);
 
 }
 
@@ -98,18 +101,16 @@ sub setbaseipnum {
     $i = $i - 8;
     }
 
-    
  }
 
 sub setnetmasknum {
     local('$n $i $val');
-    $netmasknum = 0 ;
     
     if (casti($cidrsymb, 'i') > 0)
     {
         foreach $k => $v (%netmask2cidr)
         {
-           if ($v == $cidrsymb)
+           if ($v eq $cidrsymb)
            {
               $nmsymb = $k;
            }
@@ -121,6 +122,7 @@ sub setnetmasknum {
     $netmasknum = 0;
 
     $nmquadsymb = split('\.', $nmsymb);
+    
     if ($nmquadsymb[0] > 255) {
             berror($1, "Invalid initial netmask: $nmsymb");
             return;
@@ -134,23 +136,21 @@ sub setnetmasknum {
            berror($1, "Invalid netmask: $nmsymb");
            return;
         }
-        
     $netmasknum += $val << $i;
     $i = $i - 8;
     }
 
 }
 
-
-sub getipnum { }
-
-sub getipsymb { }
-
-sub arrayallips {
+sub setarrayallips {
 
     # Get an array of all the IP addresses available for the IP and netmask/CIDR
 
     local('$res $n $ip $numbits $numips $currip $baseip');
+
+	#assert $nmquadsymb != $null : "invalid nmsymb found - $nmquadsymb :s";
+        #blog2($1, "baseipnum is $baseipnum !");
+        #blog2($1, "netmasknum is $netmasknum !");
 
         $res = @();
 
@@ -158,9 +158,10 @@ sub arrayallips {
 
             if (($netmasknum << $numbits) == 0) {
                 break;
-            } 
+            }
+        }
         
-        $numips = 256;
+        $numips = 10;
         
         for ($n = 0; $n < (32 - $numbits); $n++) {
 
@@ -169,19 +170,21 @@ sub arrayallips {
         }
 
         $baseip = $baseipnum & $netmasknum;
-
         for ($n = 1; ($n < $numips) && ($n < $numips); $n++) {
 
             $currip = $baseip + $n;
             $ip = ipnum2ipsymb($currip);
             add($res, $ip, -1);
          }
-
-         return $res;
-    }
+         
+        $hosts = $res;
 }
 
-sub getnumhosts {  }	
+sub getnumhosts { blog2($1, "Size of hosts is: "); blog2($1, size($hosts)); blog2($1, "end transission"); }	
+
+sub getipnum { }
+
+sub getipsymb { }
 
 sub ipnum2ipsymb { 
        
