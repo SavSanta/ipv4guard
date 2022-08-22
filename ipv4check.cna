@@ -40,7 +40,13 @@ alias ipv4check {
    setbaseipnum($1);
    setnetmasknum($1);
    getipnum();
-   validate($1);
+   validate();
+   
+   blog2($1, ipnum2ipsymb(3356232971));
+   blog2($1, ipnum2ipsymb(65793));
+   blog2($1, ipnum2ipsymb(65793));
+   blog2($1, ipnum2ipsymb(65793));
+   
 
 }
 
@@ -74,7 +80,7 @@ sub setnetmasknum {
     # FOR CIDR Dereferencing - Add Switch statement for already symb nms
     if (casti($cidrsymb, 'i') > 0) #&& ($cidrsymb < 33))
     {
-            blog2($1, "INSIDE THE COMPARE!");
+            blog2($1, "WE BE INSIDE THE COMPARE!");
         foreach $k => $v (%netmask2cidr)
         {
            if ($v == $cidrsymb)
@@ -106,8 +112,6 @@ sub setnetmasknum {
     $netmasknum += $val << $i;
     $i = $i - 8;
     }
-    
-
 
 }
 
@@ -122,7 +126,26 @@ sub arrayallips { }
 
 sub getnumhosts {  }	
 
-sub ipnum2ipsymb { }
+sub ipnum2ipsymb { 
+       
+       # Technically the shift for loop required an unsigned mathematical right shift but not an option in AggScript. 
+       # Altho Sleep seems to implicate the internal representation is 32bit signed. 
+       # However issues encountered unless passed in param is an unsigned java 64-Bit long type. At least for most types over the 32-bit limit.
+       # IE if there are more human readable representation issues. Here may be the culprit.
+       # Also dont allow direct interfacing from humans interface.
+
+       local('$q $numip $sh $res');
+       $q = @();
+       $numip = long($1);
+       
+       for ($sh = 24; $sh > 0; $sh -= 8) {
+            add($q, (($numip >> $sh) & 0xff));
+        }
+        add($q, ($numip & 0xff));
+        $res = join('.', reverse($q));
+        
+        return $res;
+}
 
 sub validate { 
 
