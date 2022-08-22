@@ -2,8 +2,8 @@
 
 beacon_command_register(
 	"ipv4check",
-	"test",
-	"Usage: ipv4check <ADDR>/<NETMASK>\nipv4check <ADDR>-<ADDR>\n MY SILLY DESCRIPTION HERE.");
+	"IP helper tools",
+	"Usage: ipv4check hostcount <ADDR>/<CIDR>\nipv4check hostcount <ADDR> <NETMASK>\n MY SILLY DESCRIPTION HERE.");
 
 
 global('$baseipnum $netmasknum 
@@ -17,25 +17,37 @@ $nmsymb
 
 alias ipv4check {
     
-    # Validate format If Includes Netmask
-    
-    $splitted = split("/", $2);
-    
-    if (size($splitted) != 2)
+    local('$splitted');
+
+    if (indexOf($2, "/"))
     {
-        berror($1, "Not a valid CIDR Address: $2");
-        return;
+        $splitted = split("/", $2);
+        blog2($1, "Assuming CIDR address.");
+        vdateip($1, $splitted[0]);
+        vdatecidr($1, $splitted[1]);
+        $cidrsymb = $splitted[1];
     }
-     
+    else 
+    {
+        $splitted = split(" ", $2);
+        blog2($1, "Assuming IP Addr: $splitted[0] and Netmask: $splitted[1]");
+        if (size($splitted) == 2)
+        {
+            vdateip($splitted[0]);
+            vdateip($splitted[1]);
+            $cidrsymb = %netmask2cidr($splitted[1]);
+        }
+        else 
+        {
+            berror("Couldnt parse addr netmask");
+            throw("Addr-Netmask Error.");
+        }
+        
+    }
+    
     $ipsymb = $splitted[0];
-    $cidrsymb = $splitted[1];
     $quadsymb = split('\.', $splitted[0]);
-    
-    if (size($quadsymb) != 4)
-    {
-        berror($1, "Not a valid IPv4 Address: $ipsymb");
-        return;
-    }
+
 
    setbaseipnum($1);
    setnetmasknum($1);
@@ -47,8 +59,31 @@ alias ipv4check {
    blog2($1, ipnum2ipsymb(65793));
    blog2($1, ipnum2ipsymb(65793));
    
-
 }
+
+sub vdatecidr {
+    local('$splitted');
+
+    $splitted = split("/", $2);
+    
+    if ("$2" !in %cidr2hosts)
+    {
+        berror($1, "Not a valid CIDR Address: $2");
+        throw("CIDR Error.");
+    }
+
+ }
+ 
+ sub vdateip { 
+    local('$splitted');
+    
+    if ( "$1" !ismatch "^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$")
+    {
+        berror($1, "Not a valid IPv4 address: $2");
+        throw("IPV4 Error.");
+    }
+ 
+ }
 
 
 sub setbaseipnum {
@@ -122,7 +157,40 @@ sub getipsymb { }
 
 sub getbinary { }
 
-sub arrayallips { }
+sub arrayallips {
+
+    # Get an array of all the IP addresses available for the IP and netmask/CIDR
+
+    local('$res $n $ip $numbits $numips $currip $baseip');
+
+        $res = @();
+
+        for ($numbits = 0; $numbits < 32; $numbits++) {
+
+            if (($netmasknum << $numbits) == 0) {
+                break;
+            } 
+        
+        $numips = 256;
+        
+        for ($n = 0; $n < (32 - $numbits); $n++) {
+
+            $numips = $numips << 1;
+            $numips = $numips | 1;
+        }
+
+        $baseip = $baseipnum & $netmasknum;
+
+        for ($n = 1; ($n < $numips) && ($n < $numips); $n++) {
+
+            $currip = $baseip + $n;
+            $ip = ipnum2ipsymb($currip);
+            add($res, $ip, -1);
+         }
+
+         return $res;
+    }
+}
 
 sub getnumhosts {  }	
 
@@ -160,7 +228,6 @@ sub validate {
    blog2($1, "Netmask Numericals is: $netmasknum");
    blog2($1, "Netmask Symbol $nmsymb");
    blog2($1, "Netmask Quads: $nmquadsymb");
-   
 
 }
 
@@ -237,7 +304,4 @@ sub validate {
 "255.255.255.254"   => "31",
 "255.255.255.255"   => "32"
 );
-
-
-
 
