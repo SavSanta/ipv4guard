@@ -3,7 +3,7 @@
 beacon_command_register(
 	"ipv4check",
 	"IP helper tools",
-	"Usage: ipv4check hostcount <ADDR>/<CIDR>\nipv4check hostcount <ADDR> <NETMASK>\n MY SILLY DESCRIPTION HERE.");
+	"Usage: IPv4 helper script to determine available IP address or number of usable hosts in a subnet. \nipv4check hostcount <ADDR>/<CIDR>\nipv4check hostcount <ADDR> <NETMASK>\n");
 
 
 global('$baseipnum $netmasknum 
