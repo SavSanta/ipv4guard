@@ -46,16 +46,13 @@ alias ipv4check {
         
     }
     
-    $ipsymb = $splitted[0];
-    $quadsymb = split('\.', $splitted[0]);
+   $ipsymb = $splitted[0];
+   $quadsymb = split('\.', $splitted[0]);
 
    setbaseipnum($1);
    setnetmasknum($1);
    setarrayallips();
    getnumhosts($1);
-   
-   
-   #testcase($1);
 
 }
 
@@ -178,7 +175,7 @@ sub setarrayallips {
         $hosts = $res;
 }
 
-sub getnumhosts { blog2($1, "Size of hosts is: "); blog2($1, size($hosts)); blog2($1, "end transission"); }	
+sub getnumhosts { blog2($1, "Number of hosts is: "); blog2($1, size($hosts)); blog2($1, "end transission"); }	
 
 sub getipnum { }
 
@@ -266,15 +263,15 @@ sub testcase {
 %netmask2cidr = 
 %(
 
-128.0.0.0			=> "1"	,
-192.0.0.0			=> "2"	,
-224.0.0.0			=> "3"	,
-240.0.0.0			=> "4"	,
-248.0.0.0			=> "5"	,
-252.0.0.0			=> "6"	,
-254.0.0.0			=> "7"	,
-255.0.0.0 	        => "8"	,
-255.128.0.0       => "9"	,
+128.0.0.0	  => "1" ,
+192.0.0.0	  => "2" ,
+224.0.0.0	  => "3" ,
+240.0.0.0	  => "4" ,
+248.0.0.0	  => "5" ,
+252.0.0.0	  => "6" ,
+254.0.0.0	  => "7" ,
+255.0.0.0 	  => "8" ,
+255.128.0.0       => "9" ,
 255.192.0.0       => "10",
 255.224.0.0       => "11",
 255.240.0.0       => "12",
