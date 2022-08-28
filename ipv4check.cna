@@ -153,7 +153,6 @@ sub setarrayallips {
         #blog2($1, "netmasknum is $netmasknum !");
 
         $res = @();
-
         for ($numbits = 0; $numbits < 32; $numbits++) {
 
             if (($netmasknum << $numbits) == 0) {
@@ -161,8 +160,7 @@ sub setarrayallips {
             }
         }
         
-        $numips = 10;
-        
+        $numips = 0;
         for ($n = 0; $n < (32 - $numbits); $n++) {
 
             $numips = $numips << 1;
@@ -170,7 +168,7 @@ sub setarrayallips {
         }
 
         $baseip = $baseipnum & $netmasknum;
-        for ($n = 1; ($n < $numips) && ($n < $numips); $n++) {
+        for ($n = 1; ($n < $numips) ; $n++) {
 
             $currip = $baseip + $n;
             $ip = ipnum2ipsymb($currip);
