@@ -2,7 +2,7 @@
 
 beacon_command_register(
 	"ipv4check",
-	"IP helper tools",
+	"IP helper tool",
 	"Usage: IPv4 helper script to determine available IP address or number of usable hosts in a subnet. \nipv4check <ADDR>/<CIDR> <hostcount | hosts>\nipv4check <ADDR> <NETMASK> <hostcount | hosts>\nExample:\n\tipv4check 192.168.1.1/24 hostcount\n\tipv4check 192.168.1.1 255.255.255.0 hosts\n");
 
 
@@ -60,9 +60,13 @@ alias ipv4check {
    {
    	printallhosts($1);
    }
+   else if ($action ismatch 'gethosts')
+   {
+   	return $hosts;
+   }
    else
    {
-   	println("Unsupported.");
+   	println("Unsupported Action.");
    	exit(["ERROR: Unsupported action."]);
    }
 
@@ -192,28 +196,6 @@ sub setarrayallips {
         $hosts = $res;
 }
 
-
-sub getnumhosts {
-
-	return $hosts;
-}
-
-
-sub printnumhosts {
-
-	local('$hc');
-	$hc = size($hosts);
-	blog2($1, "Hostcount: $hc");
-	
-}
-
-sub printallhosts { 
-
-	local('$hv');
-	$hv = join(", ", $hosts);
-	blog2($1, "Hosts: $hv");
-}
-
 sub ipnum2ipsymb { 
        
        # Technically the shift for loop required an unsigned mathematical right shift but not an option in AggScript. 
@@ -233,6 +215,21 @@ sub ipnum2ipsymb {
         $res = join('.', reverse($q));
         
         return $res;
+}
+
+sub printnumhosts {
+
+	local('$hc');
+	$hc = size($hosts);
+	blog2($1, "Hostcount: $hc");
+	
+}
+
+sub printallhosts { 
+
+	local('$hv');
+	$hv = join(", ", $hosts);
+	blog2($1, "Hosts: $hv");
 }
 
 sub testcase { 
