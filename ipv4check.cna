@@ -40,6 +40,7 @@ alias ipv4check {
     {
         berror("Couldnt parse addr netmask");
         throw("IPAddr-Netmask Error.");
+        exit([""]);
     }
     
    $ipsymb = $splitted[0];
@@ -47,8 +48,9 @@ alias ipv4check {
 
    setbaseipnum($1);
    setnetmasknum($1);
-   setarrayallips();
-   getnumhosts($1);
+   setarrayallips($1);
+   printnumhosts($1);
+   printallhosts($1);
 
 }
 
@@ -176,11 +178,20 @@ sub setarrayallips {
         $hosts = $res;
 }
 
-sub getnumhosts { blog2($1, "Number of hosts is: "); blog2($1, size($hosts)); blog2($1, "end transission"); }	
+sub printnumhosts {
 
-sub getipnum { }
+	local('$hc');
+	$hc = size($hosts);
+	blog2($1, "Hostcount: $hc");
+	
+}
 
-sub getipsymb { }
+sub printallhosts { 
+
+	local('$hv');
+	$hv = join(", ", $hosts);
+	blog2($1, "Hosts: $hv");
+}
 
 sub ipnum2ipsymb { 
        
