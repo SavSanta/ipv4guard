@@ -178,6 +178,13 @@ sub setarrayallips {
         $hosts = $res;
 }
 
+
+sub getnumhosts {
+
+	return $hosts;
+}
+
+
 sub printnumhosts {
 
 	local('$hc');
