@@ -73,15 +73,17 @@ on beacon_input {
     # My preferred regex with regex [ismatch '((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}'] produces partitioned chunk arary with [$hit = matched()] and misses last octet. So cant use hence alt regex.
     # This out of all regex options tried is the best fit for AGS limitation.
     
-   $hits = matches("$3", '(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})');
+   while ("$3" hasmatch '(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})') 
+   {
+   	$hits = matched();
    
 	    if ($ac == true)
 	    {
 		blog2($1, "IP match - $hits - found in IPGuard.\n Task Autoclearing is ENABLED. Clearing all pending tasks for beacon.");
 		bclear($1);
 		blog2($1, "Tasks Cleared.");
-		sleep(28000);
-		return;
+		#sleep(3000);
+		#return;
 	    }
 	    else
 	    {
@@ -90,9 +92,11 @@ on beacon_input {
 		#$matchtwo = matches("$3", '(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})');
 		#blog2($1, "match Two is  - $matchtwo -");
 		blog2($1, "Verify your entered command.");
-		sleep(13000);
-		return;
+		sleep(3000);
+		#return;
 	    }
+}
+
 }
 
 popup view {
