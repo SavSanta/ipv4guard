@@ -75,6 +75,7 @@ on beacon_input {
     
     
    # TODO: Need a match logic for CIDR IP inputs too
+   # TODO: In regards to above. Settle on regex. Regex with greater than 4 digits in the last octet either require hte a \s to delineate which then requires a trimmer. 
    while ("$3" hasmatch '(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})') 
    {
    	$iphit = matched();
