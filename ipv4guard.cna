@@ -1,0 +1,119 @@
+global('$ac $ip $ips $bid')
+
+
+# CHange ips variable name as it has logical reading naming conflicts
+
+sub handle {
+
+    local('$ip');
+    # Update Auto Task Cancel setting
+    $ac = $3['autocancel'];
+    $aw = $3['combo'];
+	
+    if ($ip == $null) 
+    {  
+	berror($bid, "no bueno") ; 
+	return; 
+    }
+
+    # Grab IP address
+    $ip = $3['ipaddr'];
+    
+    # Process ips    
+    $ips = &ipv4check $ip "gethosts";
+    
+    # Dispatch to add/remove
+
+    if ($aw ismatch 'Add')
+    {
+	add_ips($ips);
+	blog($bid, "Add action complete.") ;        
+    }
+    else if ($aw ismatch 'Remove')
+    {
+	remove_ips($ips);
+	blog($bid, "Remove action complete.") ;
+    }
+    else if ($aw ismatch 'List')
+    {
+	query_ips();
+	blog($bid, "List action complete.") ;
+    }
+    else 
+    {
+    	berror($bid, "no match for action in IPGuard") ;
+    	return;
+    }
+
+
+}
+
+sub add_ips { 
+
+	addall($ip, flatten($1));
+}
+
+sub remove_ips {
+
+	removeall($ip, flatten($1));
+
+}
+
+
+sub query_ips {
+
+    blog2($bid, "Hosts: $ip");
+
+}
+
+on beacon_input {
+    local('$hits');
+
+    # is this the best loop for this?
+    # My preferred regex with regex [ismatch '((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}'] produces partitioned chunk arary with [$hit = matched()] and misses last octet. So cant use hence alt regex.
+    # This out of all regex options tried is the best fit for AGS limitation.
+    
+   $hits = matches("$3", '(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})');
+   
+	    if ($ac == true)
+	    {
+		blog2($1, "IP match - $hits - found in IPGuard.\n Task Autoclearing is ENABLED. Clearing all pending tasks for beacon.");
+		bclear($1);
+		blog2($1, "Tasks Cleared.");
+		sleep(28000);
+		return;
+	    }
+	    else
+	    {
+	    	blog2($1, " Line -> $3");
+		blog2($1, "IP match - $hits - found in IPGuard.");
+		#$matchtwo = matches("$3", '(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})');
+		#blog2($1, "match Two is  - $matchtwo -");
+		blog2($1, "Verify your entered command.");
+		sleep(13000);
+		return;
+	    }
+}
+
+popup view {
+        item "IPv4 Guard" {
+                local('$dialog %defaults');
+                
+		# Set beacon id
+		$bid = $1;          
+                
+                # setup our defaults
+                %defaults["autocancel"] = $autocancel;
+                %defaults["ipaddr"] = "169.254.254.254 255.255.255.0";
+
+                # create our dialog
+                $dialog = dialog("IPv4 Guard", %defaults, &handle);
+                dialog_description($dialog, "IPv4 Guard - Add or Remove IPv4 addresses to the beacon blocklist.\nWhen a command with a blocklist/offlimit IP is detected in a beacon, then automatically cancels ALL pending beacon tasks for that beacon.");
+                drow_text($dialog, "ipaddr",  "IP Address: ");
+                drow_combobox($dialog, "combo", "Action For IP Guard", @("Add", "Remove"));
+                drow_checkbox($dialog, "autocancel", "Cancel Pending Tasks on blocked IP", "(Globally affects on *ANY* blocked IP!)");
+                dbutton_action($dialog, "Perform");
+                # show our dialog
+                dialog_show($dialog);
+        }
+}
