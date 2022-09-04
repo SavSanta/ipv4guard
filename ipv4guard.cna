@@ -79,18 +79,18 @@ on beacon_input {
    {
    	$iphit = matched();
    
-	    if ($ac == true)
-	    {
+	if ($ac == true)
+	{
 		blog2($1, "IP match - $iphit - found in IPGuard.\nsTask Autoclearing is ENABLED. Clearing all pending tasks for beacon.");
 		bclear($1);
 		blog2($1, "Tasks Cleared.");
-	    }
-	    else
-	    {
-	    	blog2($1, " Line -> $3");
+	}
+	else
+	{
+		blog2($1, " Line -> $3");
 		blog2($1, "IP match - $iphit - found in IPGuard.");
 		blog2($1, "Verify your entered command.");
-	    }
+	}
     }
     return;
 
