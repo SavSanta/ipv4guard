@@ -17,8 +17,7 @@ sub handle {
     println("Beacone ID is $bid || Check the DATA IN IP var ---> $ip");
  
     # Process ips    
-    #$ips = 
-    fireAlias($1, "ipv4check", "169.254.254.254 255.255.255.254 gethosts");
+    $ips = fireAlias($1, "ipv4check", "169.254.254.254 255.255.255.254 gethosts");
     
     # Dispatch to add/remove/list
 
