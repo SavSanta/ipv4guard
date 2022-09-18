@@ -113,7 +113,7 @@ popup beacon {
                 $dialog = dialog("IPv4 Guard", %defaults, &handle);
                 dialog_description($dialog, "IPv4 Guard - Add or Remove IPv4 addresses to the beacon blocklist.\nWhen a command with a blocklist/offlimit IP is detected in a beacon, then automatically cancels ALL pending beacon tasks for that beacon.");
                 drow_text($dialog, "ipaddr",  "IP Address: ");
-                drow_combobox($dialog, "combo", "Action For IP Guard", @("Add", "Remove"));
+                drow_combobox($dialog, "combo", "Action For IP Guard", @("Add", "Remove", "List"));
                 drow_checkbox($dialog, "autocancel", "Cancel Pending Tasks on blocked IP", "(Globally affects on *ANY* blocked IP!)");
                 dbutton_action($dialog, "Perform");
                 # show our dialog
