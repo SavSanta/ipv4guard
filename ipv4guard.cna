@@ -79,22 +79,24 @@ on beacon_input {
    while ("$3" hasmatch '(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})') 
    {
    	$iphit = matched();
-   
-	if ($ac == true)
-	{
-		blog2($1, "IP match - $iphit - found in IPGuard.\nsTask Autoclearing is ENABLED. Clearing all pending tasks for beacon.");
-		bclear($1);
-		blog2($1, "Tasks Cleared.");
-	}
-	else
-	{
-		blog2($1, " Line -> $3");
-		blog2($1, "IP match - $iphit - found in IPGuard.");
-		blog2($1, "Verify your entered command.");
+   	
+   	if ($iphit in $ip) 
+   	{
+		if ($ac == true)
+		{
+			blog2($1, "IP match - $iphit - found in IPGuard.\nsTask Autoclearing is ENABLED. Clearing all pending tasks for beacon.");
+			bclear($1);
+			blog2($1, "Tasks Cleared.");
+		}
+		else
+		{
+			blog2($1, " Line -> $3");
+			blog2($1, "IP match - $iphit - found in IPGuard.");
+			blog2($1, "Verify your entered command.");
+		}
 	}
     }
     return;
-
 }
 
 popup view {
