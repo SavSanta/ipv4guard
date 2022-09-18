@@ -18,7 +18,7 @@ sub handle {
  
     # Process ips    
     #$ips = 
-    ipv4check 169.254.254.254 255.255.255.254 hostcount;
+    fireAlias($1, "ipv4check", "169.254.254.254 255.255.255.254 gethosts");
     
     # Dispatch to add/remove/list
 
@@ -98,13 +98,13 @@ on beacon_input {
 
 }
 
-popup view {
+popup beacon {
         item "IPv4 Guard" {
                 local('$dialog %defaults');
-                
+
 		# Set beacon id
 		$bid = $1;          
-                
+
                 # setup our defaults
                 %defaults["autocancel"] = $autocancel;
                 %defaults["ipaddr"] = "169.254.254.254 255.255.255.254";
