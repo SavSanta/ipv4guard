@@ -1,5 +1,5 @@
 global('$ac $ip $ips $bid')
-
+$ip = @();
 
 # CHange ips variable name as it has logical reading naming conflicts
 
@@ -9,20 +9,18 @@ sub handle {
     # Update Auto Task Cancel setting
     $ac = $3['autocancel'];
     $aw = $3['combo'];
-	
-    if ($ip == $null) 
-    {  
-	berror($bid, "no bueno") ; 
-	return; 
-    }
 
     # Grab IP address
     $ip = $3['ipaddr'];
-    
+
+    blog2($bid, "Check the DATA IN IP var ---> $ip");
+    println("Beacone ID is $bid || Check the DATA IN IP var ---> $ip");
+ 
     # Process ips    
-    $ips = &ipv4check $ip "gethosts";
+    #$ips = 
+    ipv4check 169.254.254.254 255.255.255.254 hostcount;
     
-    # Dispatch to add/remove
+    # Dispatch to add/remove/list
 
     if ($aw ismatch 'Add')
     {
@@ -97,6 +95,7 @@ on beacon_input {
 	}
     }
     return;
+
 }
 
 popup view {
@@ -108,7 +107,7 @@ popup view {
                 
                 # setup our defaults
                 %defaults["autocancel"] = $autocancel;
-                %defaults["ipaddr"] = "169.254.254.254 255.255.255.0";
+                %defaults["ipaddr"] = "169.254.254.254 255.255.255.254";
 
                 # create our dialog
                 $dialog = dialog("IPv4 Guard", %defaults, &handle);
