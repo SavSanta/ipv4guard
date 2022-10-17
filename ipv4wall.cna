@@ -438,7 +438,7 @@ popup beacon {
 
                 # setup our defaults
                 %defaults["autocancel"] = $autocancel;
-                %defaults["ipaddr"] = "169.254.254.254 255.255.255.254";
+                %defaults["ipaddr"] = "169.254.254.254/32";
                 %defaults['bid'] = $1;
 
                 # create our dialog
