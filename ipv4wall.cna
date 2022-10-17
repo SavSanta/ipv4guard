@@ -1,4 +1,4 @@
-
+ debug(8)
 # Profile
 # Optimization Info that may relate
 
@@ -33,6 +33,7 @@ sub ipv4calc {
     }
     else if (($2 ne $null) && ($3 ne $null))
     {
+    println("$2 is arg2, and $3 is arg3");
     	$splitted = split("/", $2);
         blog2($1, "Assuming IP Addr: $2 with Netmask: $3");
         iff(vdateip($1, $2), ticks(), exit(["ERROR: IPAddr validation"]));
@@ -41,7 +42,7 @@ sub ipv4calc {
         $action = $4;
     }
     else 
-    {
+    {  println("Error else for $2 is arg2, and $3 is arg3");
         berror("Couldnt parse addr netmask");
         throw("IPAddr-Netmask Error.");
         exit([""]);
@@ -340,8 +341,8 @@ $guardips = @();
 
 sub handle {
 
-    local('$ip $ips');
-    # Update Auto Task Cancel setting
+    local('$bid $ip $ips');
+    # Update Auto Task Cancel setting	
     $ac = $3['autocancel'];
     $ap = $3['combo'];
 
@@ -353,7 +354,7 @@ sub handle {
  
     # Process ips    
     #$ips = fireAlias($1, "ipv4check", "169.254.254.254/30 gethosts");
-    $ips = ipv4calc("169.254.254.254/30", "gethosts") ;
+    $ips = ipv4calc($bid, $ip, "gethosts") ;
     
     # Dispatch to add/remove/list
 
@@ -435,16 +436,14 @@ popup beacon {
         item "IPv4 Guard" {
                 local('$dialog %defaults');
 
-		# Set beacon id
-		$bid = $1;          
-
                 # setup our defaults
                 %defaults["autocancel"] = $autocancel;
                 %defaults["ipaddr"] = "169.254.254.254 255.255.255.254";
+                %defaults['bid'] = $1;
 
                 # create our dialog
                 $dialog = dialog("IPv4 Guard", %defaults, &handle);
-                dialog_description($dialog, "IPv4 Guard - Add or Remove IPv4 addresses to the beacon blocklist.\nWhen a command with a blocklist/offlimit IP is detected in a beacon, then automatically cancels ALL pending beacon tasks for that beacon.");
+                dialog_description($dialog, "IPv4 Guard - Add or Remove IPv4 addresses to the beacon b	locklist.\nWhen a command with a blocklist/offlimit IP is detected in a beacon, then automatically cancels ALL pending beacon tasks for that beacon.");
                 drow_text($dialog, "ipaddr",  "IP Address: ");
                 drow_combobox($dialog, "combo", "Action For IP Guard", @("Add", "Remove", "List"));
                 drow_checkbox($dialog, "autocancel", "Cancel Pending Tasks on blocked IP", "(Globally affects on *ANY* blocked IP!)");
