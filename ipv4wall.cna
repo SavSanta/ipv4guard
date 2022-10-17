@@ -18,6 +18,9 @@ $nmsymb
 $hosts
 ')
 
+global('$ac $guardips')
+$guardips = @();
+
 sub ipv4calc {
     
     local('$splitted $action');
@@ -334,14 +337,13 @@ sub testcase {
 alias("ipv4check", &ipv4calc);
 
 #-------------------------
-global('$ac $guardips $bid')
-$guardips = @();
+
 
 # Change ips variable name as it has logical reading naming conflicts
 
 sub handle {
-
-    local('$bid $ip $ips');
+    global('$bid');
+    local('$ip $ips');
     # Update Auto Task Cancel setting	
     $ac = $3['autocancel'];
     $ap = $3['combo'];
@@ -382,21 +384,20 @@ sub handle {
 }
 
 sub add_ips { 
-
+	global('$guardips');
 	addAll($guardips, flatten($1));
 }
 
 sub remove_ips {
-
+	global('$guardips');
 	removeAll($guardips, flatten($1));
 
 }
 
 
 sub query_ips {
-
+    global('$guardips');
     blog2($bid, "Hosts: $guardips");
-
 }
 
 on beacon_input {
@@ -435,12 +436,12 @@ on beacon_input {
 popup beacon {
         item "IPv4 Guard" {
                 local('$dialog %defaults');
-
+                
+		$bid = $1;
                 # setup our defaults
                 %defaults["autocancel"] = $autocancel;
                 %defaults["ipaddr"] = "169.254.254.254/32";
-                %defaults['bid'] = $1;
-
+                
                 # create our dialog
                 $dialog = dialog("IPv4 Guard", %defaults, &handle);
                 dialog_description($dialog, "IPv4 Guard - Add or Remove IPv4 addresses to the beacon b	locklist.\nWhen a command with a blocklist/offlimit IP is detected in a beacon, then automatically cancels ALL pending beacon tasks for that beacon.");
