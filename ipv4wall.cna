@@ -1,5 +1,9 @@
+# <NameTBD>
+# Version: 0.1
+# Author: SavSanta (Ru)
+
 # Profile
-# Optimization Info that may relate...fookin ell not with this langauge.
+# Optimizations on speed needed...but...fookin ell not with this langauge.
 
 beacon_command_register(
 	"ipv4check",
@@ -16,9 +20,6 @@ $cidrsymb
 $nmsymb
 $hosts
 ')
-
-global('$ac $guardips')
-$guardips = @();
 
 sub ipv4calc {
     
@@ -335,9 +336,13 @@ sub testcase {
 
 alias("ipv4check", &ipv4calc);
 
-#-------------------------
+##########################
+# Merged second CNA script into here due to limitations of the language.
+###########################
 
 
+global('$ac $guardips')
+$guardips = @();
 # Change ips variable name as it has logical reading naming conflicts
 
 sub handle {
@@ -392,7 +397,6 @@ sub remove_ips {
 	removeAll($guardips, flatten($1));
 
 }
-
 
 sub query_ips {
     global('$guardips');
