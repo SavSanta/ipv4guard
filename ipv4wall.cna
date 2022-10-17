@@ -383,12 +383,12 @@ sub handle {
 
 sub add_ips { 
 
-	addall($guardips, flatten($1));
+	addAll($guardips, flatten($1));
 }
 
 sub remove_ips {
 
-	removeall($guardips, flatten($1));
+	removeAll($guardips, flatten($1));
 
 }
 
