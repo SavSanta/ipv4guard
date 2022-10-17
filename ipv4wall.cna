@@ -34,7 +34,7 @@ sub ipv4calc {
     else if (($2 ne $null) && ($3 ne $null))
     {
     println("$2 is arg2, and $3 is arg3");
-    	$splitted = split("/", $2);
+    	$splitted = split(" ", $2);
         blog2($1, "Assuming IP Addr: $2 with Netmask: $3");
         iff(vdateip($1, $2), ticks(), exit(["ERROR: IPAddr validation"]));
         iff(vdateip($1, $3), ticks(), exit(["ERROR: Netmask validation"]));
