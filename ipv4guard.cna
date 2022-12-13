@@ -1,6 +1,6 @@
-# <NameTBD>
-# Version: 0.1
-# Author: SavSanta (Ru)
+# IPv4Guard
+# Version: 0.2
+# Author: SavSanta
 
 # Profile
 # Optimizations on speed needed...but...fookin ell not with this langauge.
@@ -197,7 +197,7 @@ sub handle {
     }
     else 
     {
-    	berror($bid, "no match for action in IPGuard") ;
+    	berror($bid, "No match for action in IPGuard") ;
     	return;
     }
 
@@ -237,9 +237,9 @@ on beacon_input {
    	{
 		if ($ac == true)
 		{
-			blog2($1, "IP match - $iphit - found in IPGuard.\nsTask Autoclearing is ENABLED. Clearing all pending tasks for beacon.");
+			blog2($1, "IP match - $iphit - found in IPGuard.\nAuto-Cancel is ENABLED. Cancelling ALL pending commands for beacon.");
 			bclear($1);
-			blog2($1, "Tasks Cleared.");
+			blog2($1, "All Commands Cleared.");
 		}
 		else
 		{
@@ -266,7 +266,7 @@ popup beacon {
                 dialog_description($dialog, "IPv4 Guard - Add or Remove IPv4 addresses to the beacon b	locklist.\nWhen a command with a blocklist/offlimit IP is detected in a beacon, then automatically cancels ALL pending beacon tasks for that beacon.");
                 drow_text($dialog, "ipaddr",  "IP Address: ");
                 drow_combobox($dialog, "combo", "Action For IP Guard", @("Add", "Remove", "List"));
-                drow_checkbox($dialog, "autocancel", "Cancel Pending Tasks on blocked IP", "(Globally affects on *ANY* blocked IP!)");
+                drow_checkbox($dialog, "autocancel", "Auto cancel command/tasks on blocked IP", "(Globally affects on *ANY* blocked IP!)");
                 dbutton_action($dialog, "Perform");
                 # show our dialog
                 dialog_show($dialog);
