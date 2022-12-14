@@ -5,7 +5,7 @@ Additional functions to act as shorthand for determinign the number of hosts in 
 
 Example:
 
-### Get number of hosts in a CIDR
+**Get number of hosts in a CIDR** 
 [10/19 11:38:46] beacon> ipv4check 192.168.1.1/24 hostcount
 [10/19 11:38:46] [*] Assuming CIDR address.
 [10/19 11:38:46] [*] Hostcount: 254
