@@ -1,11 +1,9 @@
 # IPv4Guard
-# Version: 0.2
+# Version: 0.3
 # Author: SavSanta
 
 # Profile
-# Optimizations on speed needed...but...fookin ell not with this langauge.
-debug(8);
-
+# Optimizations on speed/mem necessary
 
 beacon_command_register(
 	"ipv4check",
