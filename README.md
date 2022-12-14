@@ -3,14 +3,25 @@
 A Cobalt Strike Aggressor Script that attempts to prevent Cobalt Strike commands from being executed on non-whitelisted/off-target/unapproved IPv4 addresses.
 
 
+# Usage
 
-**Right-Click Beacon in Session Window -> Select "IPv4 Guard". Input CIDR IP (like 192.168.1.1/30). Select "Add" as the action. Click Perform.**
+**Right-Click Beacon in Session Window -> Select "IPv4 Guard".**
+![S1](Screenshots/S1.png)
 
+**Input CIDR IP (like 192.168.1.1/30). Select "Add" as the action. Click Perform.**  
+![S2](Screenshots/S2.png)
+
+![S2-1](Screenshots/S2-1.png)  
 [10/19 11:43:47] [*] Assuming CIDR address.  
 [10/19 11:41:41] [+] Add action complete.  
 
-**Right-Click Beacon in Session Window -> Select "IPv4 Guard". Select "List" as the action. IP is ignored. Click Perform.**
+**Right-Click Beacon in Session Window -> Select "IPv4 Guard".** 
+![S1](Screenshots/S1.png)
 
+**Select "List" as the action. IP is ignored. Click Perform.**  
+![S3](Screenshots/S3.png)
+
+![S3-1](Screenshots/S3-1.png)  
 [10/19 11:43:47] [*] Assuming CIDR address.  
 [10/19 11:43:47] [*] Hosts: @('192.168.1.1', '192.168.1.2', '192.168.1.3', '192.168.1.4')  
 [10/19 11:43:47] [+] List action complete.  
@@ -21,11 +32,12 @@ A Cobalt Strike Aggressor Script that attempts to prevent Cobalt Strike commands
 [10/19 11:45:16] [*]  Line -> shell 192.168.1.1  
 [10/19 11:45:16] [*] IP match - 192.168.1.13 - found in IPGuard.  
 [10/19 11:45:16] [*] Verify your entered command.  
+![S5](Screenshots/S5.png)
 
 
 ---
 
-Additional functions to act as shorthand for determining the number of hosts in a CIDR or listing out all IPs in that range
+Additional helper functions inside a beacon window can run and act as shorthand for determining the number of hosts in a CIDR or listing out all IPs in that range
 
 Examples:
 
