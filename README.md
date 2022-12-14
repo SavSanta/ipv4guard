@@ -3,7 +3,7 @@
 A Cobalt Strike Aggressor Script that _attempts_ to aid a Cobalt Strike operator from being executing commands on non-whitelisted / off-target/ unapproved IPv4 target addresses.
 
 ## How It Works
-After an operator Adds and IP address to the monitoring list, the Cobalt Strike Aggressor Script monitors the `beacon_input` hook for IPv4 that matches addresses that take the proper action and halts the action when it detects a match.
+After an operator adds an IP address to the monitoring list, the Cobalt Strike Aggressor Script monitors the `beacon_input` hook for IPv4 that matches addresses that take the proper action and halts the action when it detects a match.
 
 
 # Usage
