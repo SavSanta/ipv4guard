@@ -68,6 +68,7 @@ Examples:
 # TODOs
 
 - Investigate adding hostname-based detection/prevention.
+- Investigate common systools output parsing
 
 ---
 # References
