@@ -58,7 +58,7 @@ Examples:
 
 
 ---
-Caveat and Limitations
+# Caveat and Limitations
 
 - If an operator is already operating from a non-whitelisted target, one could possibly run commands from that target and the CNA script can not determine its origination point.
 - Similarily, operators should still be aware of where theyre actually operating from (ie be aware if your socks proxying, tunneling into different VLANs, targeting different RFC 1918 IP addresses)
