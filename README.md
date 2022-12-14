@@ -1,6 +1,9 @@
 # ipv4guard
 
-A Cobalt Strike Aggressor Script that attempts to prevent Cobalt Strike commands from being executed on non-whitelisted/off-target/unapproved IPv4 addresses.
+A Cobalt Strike Aggressor Script that _attempts_ to aid a Cobalt Strike operator from being executing commands on non-whitelisted / off-target/ unapproved IPv4 target addresses.
+
+## How It Works
+After an operator Adds and IP address to the monitoring list, the Cobalt Strike Aggressor Script monitors the `beacon_input` hook for IPv4 that matches addresses that take the proper action and halts the action when it detects a match.
 
 
 # Usage
@@ -55,5 +58,18 @@ Examples:
 
 
 ---
-Caveat:
-Higher memory consumption on large CIDR ( aruond /12 or lower) blocks. Thusly not suggested for low memory systems.
+Caveat and Limitations
+
+- If an operator is already operating from a non-whitelisted target, one could possibly run commands from that target and the CNA script can not determine its origination point.
+- Similarily, operators should still be aware of where theyre actually operating from (ie be aware if your socks proxying, tunneling into different VLANs, targeting different RFC 1918 IP addresses)
+- Higher memory consumption on large CIDR ( aruond /12 or lower) blocks. Thusly not suggested for low memory systems.
+
+---
+# TODOs
+
+- Investigate adding hostname-based detection/prevention.
+
+---
+# References
+
+- Net::IP::Match::Regexp
